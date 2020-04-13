@@ -68,6 +68,9 @@ public:
     void reload(QString fileName);
     QString filePathAt(int index);
     void unloadExcept(QString fileName, bool keepNearby);
+    bool isDirectory(QString fileName);
+    bool isDirectory(int index);
+
 signals:
     void fileRemoved(QString fileName, int index);
     void fileRenamed(QString from, int indexFrom, QString to, int indexTo);

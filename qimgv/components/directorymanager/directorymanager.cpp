@@ -353,24 +353,25 @@ void DirectoryManager::generateFileList() {
     for(const auto & entry : fs::directory_iterator(toStdString(currentPath))) {
         QString name = QString::fromStdString(entry.path().filename().string());
         match = regex.match(name);
-        if(match.hasMatch()) {
-            Entry newEntry;
-            try {
-                newEntry.path = name;
+        Entry newEntry;
+        try {
+            newEntry.path = name;
+            newEntry.modifyTime = entry.last_write_time();
+            newEntry.isDirectory = entry.is_directory();
+            if(!newEntry.isDirectory)
                 newEntry.size = entry.file_size();
-                newEntry.modifyTime = entry.last_write_time();
-                newEntry.isDirectory = entry.is_directory();
-            } catch (const std::filesystem::filesystem_error &err) {
-                qDebug() << "[DirectoryManager]" << err.what();
-                continue;
-            }
-            entryVec.emplace_back(newEntry);
-            /* It is probably worth implementing lazy loading in future.
-             * Read names only, and other stuff ondemand.
-             * This would give ~2x load speedup when we are just sorting by filename.
-             */
-            //entryVec.emplace_back(Entry(name, entry.is_directory()));
+        } catch (const std::filesystem::filesystem_error &err) {
+            qDebug() << "[DirectoryManager]" << err.what();
+            continue;
         }
+        if(newEntry.isDirectory || match.hasMatch()) {
+            entryVec.emplace_back(newEntry);
+        }
+        /* It is probably worth implementing lazy loading in future.
+         * Read names only, and other stuff ondemand.
+         * This would give ~2x load speedup when we are just sorting by filename.
+         */
+        //entryVec.emplace_back(Entry(name, entry.is_directory()));
     }
 }
 

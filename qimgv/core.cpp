@@ -250,9 +250,14 @@ void Core::onModelLoaded() {
 }
 
 void Core::onDirectoryViewItemSelected(int index) {
-    // we aren`t using async load so it won't flicker with empty view
-    mw->enableDocumentView();
-    loadIndex(index, false, settings->usePreloader());
+    qDebug() << "dir?" << index << model->isDirectory(index);
+    if(model->isDirectory(index)) {
+        loadPath(model->fullPath(model->fileNameAt(index)));
+    } else {
+        // we aren`t using async load so it won't flicker with empty view
+        mw->enableDocumentView();
+        loadIndex(index, false, settings->usePreloader());
+    }
 }
 
 void Core::rotateLeft() {

@@ -295,7 +295,7 @@ void DirectoryModel::updateItem(QString fileName, std::shared_ptr<Image> img) {
 }
 
 void DirectoryModel::load(QString fileName, bool asyncHint) {
-    if(!contains(fileName) || loader.isLoading(fullPath(fileName)))
+    if(!contains(fileName) /*|| dirManager.isDirectory(fullPath(fileName))*/ || loader.isLoading(fullPath(fileName)))
         return;
     if(!cache.contains(fileName)) {
         if(asyncHint) {
@@ -318,6 +318,18 @@ void DirectoryModel::reload(QString fileName) {
 }
 
 void DirectoryModel::preload(QString fileName) {
-    if(contains(fileName) && !cache.contains(fileName))
+    if(!contains(fileName) || dirManager.isDirectory(fullPath(fileName)))
+        return;
+    if(!dirManager.isDirectory(fullPath(fileName)) && !cache.contains(fileName))
         loader.loadAsync(fullPath(fileName));
+}
+
+bool DirectoryModel::isDirectory(QString fileName) {
+    if(!contains(fileName))
+        return false;
+    return dirManager.isDirectory(fullPath(fileName));
+}
+
+bool DirectoryModel::isDirectory(int index) {
+    return isDirectory(fileNameAt(index));
 }
