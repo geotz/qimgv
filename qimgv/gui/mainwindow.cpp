@@ -446,11 +446,12 @@ void MW::showFullScreen() {
     if(!isHidden())
         saveWindowGeometry();
     //move to target screen
-    if(desktopWidget->screenCount() > currentDisplay &&
+    auto scr = QGuiApplication::screens();
+    if(scr.size() > currentDisplay &&
        currentDisplay != desktopWidget->screenNumber(this))
     {
-        this->move(desktopWidget->screenGeometry(currentDisplay).x(),
-                   desktopWidget->screenGeometry(currentDisplay).y());
+	auto dispGeom = scr[currentDisplay]->geometry();
+	this->move(dispGeom.x(),dispGeom.y());
     }
     QWidget::showFullScreen();
     emit fullscreenStateChanged(true);
