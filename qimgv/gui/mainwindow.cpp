@@ -8,12 +8,12 @@ MW::MW(QWidget *parent)
       desktopWidget(nullptr),
       bgOpacity(1.0),
       activeSidePanel(SIDEPANEL_NONE),
+      cropPanel(nullptr),
+      cropOverlay(nullptr),
       saveOverlay(nullptr),
       copyOverlay(nullptr),
       renameOverlay(nullptr),
       imageInfoOverlay(nullptr),
-      cropPanel(nullptr),
-      cropOverlay(nullptr),
       infoBarFullscreen(nullptr),
       floatingMessage(nullptr)
 {
