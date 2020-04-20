@@ -36,7 +36,7 @@ void ThumbnailGridWidget::drawHighlight(QPainter *painter) {
     }
 }
 
-void ThumbnailGridWidget::drawThumbnail(QPainter *painter, qreal dpr, const QPixmap *pixmap) {
+void ThumbnailGridWidget::drawThumbnail(QPainter *painter, qreal /*dpr*/, const QPixmap *pixmap) {
     // draw a shadow rectangle
     if(!thumbnail->hasAlphaChannel())
         painter->fillRect(drawRectCentered.adjusted(3,3,3,3), shadowColor);
@@ -50,7 +50,7 @@ void ThumbnailGridWidget::readSettings() {
     highlightColor.setRgb(settings->highlightColor().rgb());
 }
 
-void ThumbnailGridWidget::drawHover(QPainter *painter) {
+void ThumbnailGridWidget::drawHover(QPainter */*painter*/) {
 }
 
 void ThumbnailGridWidget::drawLabel(QPainter *painter) {
@@ -124,7 +124,7 @@ void ThumbnailGridWidget::updateThumbnailDrawPosition() {
     }
 }
 
-void ThumbnailGridWidget::drawIcon(QPainter *painter, qreal dpr, const QPixmap *pixmap) {
+void ThumbnailGridWidget::drawIcon(QPainter *painter, qreal /*dpr*/, const QPixmap *pixmap) {
     QPointF drawPosCentered(width()  / 2 - pixmap->width()  / (2 * pixmap->devicePixelRatioF()),
                             height() / 2 - pixmap->height() / (2 * pixmap->devicePixelRatioF()));
     painter->drawPixmap(drawPosCentered, *pixmap, QRectF(QPoint(0,0), pixmap->size()));

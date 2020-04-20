@@ -18,12 +18,15 @@ add_subdirectory(gui)
 add_subdirectory(utils)
 
 # C++ STANDARD
-target_compile_features(qimgv PRIVATE cxx_std_17)
-set_target_properties(qimgv PROPERTIES CXX_EXTENSIONS OFF)
+#target_compile_features(qimgv PRIVATE cxx_std_17)
+#set_target_properties(qimgv PROPERTIES CXX_EXTENSIONS OFF)
 
 # LINK STUFF
 target_link_libraries(qimgv PRIVATE Qt5::Core Qt5::Widgets Qt5::Concurrent)
-if(USING_LIBSTDCXX)
+if(BOOST_FS)
+    target_link_libraries(qimgv PRIVATE Boost::filesystem)
+    target_compile_definitions(qimgv PRIVATE QIMGV_BOOST_FS)
+elseif(USING_LIBSTDCXX)
     target_link_libraries(qimgv PRIVATE stdc++fs)
 endif()
 

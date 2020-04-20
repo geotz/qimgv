@@ -374,14 +374,14 @@ void Core::removeFile(QString fileName, bool trash) {
     }
 }
 
-void Core::onFileRemoved(QString fileName, int index) {
+void Core::onFileRemoved(QString /*fileName*/, int /*index*/) {
     if(model->isEmpty()) {
         mw->closeImage();
     }
     updateInfoString();
 }
 
-void Core::onFileRenamed(QString from, int indexFrom, QString to, int indexTo) {
+void Core::onFileRenamed(QString /*from*/, int /*indexFrom*/, QString /*to*/, int /*indexTo*/) {
 }
 
 void Core::onFileAdded(QString fileName) {

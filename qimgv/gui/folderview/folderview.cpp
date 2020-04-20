@@ -164,6 +164,6 @@ void FolderView::paintEvent(QPaintEvent *) {
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &p, this);
 }
 
-void FolderView::resizeEvent(QResizeEvent *event) {
+void FolderView::resizeEvent(QResizeEvent */*event*/) {
 
 }

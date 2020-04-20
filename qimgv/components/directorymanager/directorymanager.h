@@ -12,7 +12,6 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include <filesystem>
 #include <algorithm>
 //#include <experimental/filesystem>
 
@@ -25,35 +24,7 @@
 #endif
 
 class DirectoryManager;
-class Entry {
-public:
-    Entry() { }
-    Entry( QString _path, std::uintmax_t _size, std::filesystem::file_time_type _modifyTime, bool _isDirectory)
-        : path(_path),
-          size(_size),
-          modifyTime(_modifyTime),
-          isDirectory(_isDirectory)
-    {
-    }
-    Entry( QString _path, std::uintmax_t _size, bool _isDirectory)
-        : path(_path),
-          size(_size),
-          isDirectory(_isDirectory)
-    {
-    }
-    Entry( QString _path, bool _isDirectory)
-        : path(_path),
-          isDirectory(_isDirectory)
-    {
-    }
-    bool operator==(const QString &anotherPath) const {
-        return this->path == anotherPath;
-    }
-    QString path;
-    std::uintmax_t size;
-    std::filesystem::file_time_type modifyTime;
-    bool isDirectory;
-};
+class Entry;
 
 typedef bool (DirectoryManager::*CompareFunction)(const Entry &e1, const Entry &e2) const;
 
@@ -61,6 +32,7 @@ class DirectoryManager : public QObject {
     Q_OBJECT
 public:
     DirectoryManager();
+    virtual ~DirectoryManager();
     // ignored if the same dir is already opened
     bool setDirectory(QString);
     QString directory() const;
@@ -112,7 +84,7 @@ private:
     bool date_entry_compare(const Entry &e1, const Entry &e2) const;
     bool date_entry_compare_reverse(const Entry &e1, const Entry &e2) const;
     bool entryCompareString(Entry &e, QString path);
-    CompareFunction compareFunction();
+    CompareFunction compareFunction() const;
     bool size_entry_compare(const Entry &e1, const Entry &e2) const;
     bool size_entry_compare_reverse(const Entry &e1, const Entry &e2) const;
 signals:

@@ -26,7 +26,7 @@ void Randomizer::setCurrent(int _current) {
 // which it does in our case
 int Randomizer::indexOf(int item) {
     int index = -1;
-    if(item >= vec.size())
+    if(item >= int(vec.size()))
         return index;
     std::vector<int>::iterator it;
     int i = 0;
@@ -59,7 +59,7 @@ void Randomizer::print() {
 int Randomizer::next() {
     // re-shuffle when needed
     // because vector gets rearranged this will break prev()
-    while(currentIndex == vec.size() - 1) {
+    while(currentIndex == int(vec.size()) - 1) {
         int currentItem = vec[currentIndex];
         shuffle();
         setCurrent(currentItem);

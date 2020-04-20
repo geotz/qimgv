@@ -8,14 +8,14 @@ MW::MW(QWidget *parent)
       desktopWidget(nullptr),
       bgOpacity(1.0),
       activeSidePanel(SIDEPANEL_NONE),
-      copyOverlay(nullptr),
       saveOverlay(nullptr),
+      copyOverlay(nullptr),
       renameOverlay(nullptr),
-      infoBarFullscreen(nullptr),
       imageInfoOverlay(nullptr),
-      floatingMessage(nullptr),
       cropPanel(nullptr),
-      cropOverlay(nullptr)
+      cropOverlay(nullptr),
+      infoBarFullscreen(nullptr),
+      floatingMessage(nullptr)
 {
     setAttribute(Qt::WA_TranslucentBackground, true);
     this->setMinimumSize(400, 300);

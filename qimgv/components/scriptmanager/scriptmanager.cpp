@@ -20,7 +20,7 @@ ScriptManager *ScriptManager::getInstance() {
     return scriptManager;
 }
 
-#ifdef __linux
+#if defined(__linux) or (defined(__APPLE__) and defined( __MACH__ ))
 void ScriptManager::runScript(const QString &scriptName, std::shared_ptr<Image> img) {
     if(scripts.contains(scriptName)) {
         Script script = scripts.value(scriptName);

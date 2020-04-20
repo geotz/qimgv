@@ -29,12 +29,12 @@ target_sources(qimgv PRIVATE
 
 )
 
-if(UNIX)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_sources(qimgv PRIVATE
         directorymanager/watchers/linux/linuxfsevent.cpp
         directorymanager/watchers/linux/linuxwatcher.cpp
         directorymanager/watchers/linux/linuxworker.cpp)
-elseif(WIN32)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     target_sources(qimgv PRIVATE
         directorymanager/watchers/windows/windowswatcher.cpp
         directorymanager/watchers/windows/windowsworker.cpp)
