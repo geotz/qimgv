@@ -117,19 +117,19 @@ bool DirectoryManager::name_entry_compare_reverse(const Entry &e1, const Entry &
     return collator.compare(e1.path, e2.path) > 0;
 };
 
-bool DirectoryManager::date_entry_compare(const Entry& e1, const Entry& e2) const {
+bool DirectoryManager::date_entry_compare(const Entry& e1, const Entry& e2) {
     return e1.modifyTime < e2.modifyTime;
 }
 
-bool DirectoryManager::date_entry_compare_reverse(const Entry& e1, const Entry& e2) const {
+bool DirectoryManager::date_entry_compare_reverse(const Entry& e1, const Entry& e2) {
     return e1.modifyTime > e2.modifyTime;
 }
 
-bool DirectoryManager::size_entry_compare(const Entry& e1, const Entry& e2) const {
+bool DirectoryManager::size_entry_compare(const Entry& e1, const Entry& e2) {
     return e1.size < e2.size;
 }
 
-bool DirectoryManager::size_entry_compare_reverse(const Entry& e1, const Entry& e2) const {
+bool DirectoryManager::size_entry_compare_reverse(const Entry& e1, const Entry& e2) {
     return e1.size > e2.size;
 }
 
@@ -137,19 +137,21 @@ bool DirectoryManager::entryCompareString(Entry &e, QString path) {
     return (e.path == path);
 }
 
-CompareFunction DirectoryManager::compareFunction() const {
-    CompareFunction cmpFn = &DirectoryManager::name_entry_compare;
-    if(mSortingMode == SortingMode::SORT_NAME_DESC)
-        cmpFn = &DirectoryManager::name_entry_compare_reverse;
-    if(mSortingMode == SortingMode::SORT_TIME)
-        cmpFn = &DirectoryManager::date_entry_compare;
-    if(mSortingMode == SortingMode::SORT_TIME_DESC)
-        cmpFn = &DirectoryManager::date_entry_compare_reverse;
-    if(mSortingMode == SortingMode::SORT_SIZE)
-        cmpFn = &DirectoryManager::size_entry_compare;
-    if(mSortingMode == SortingMode::SORT_SIZE_DESC)
-        cmpFn = &DirectoryManager::size_entry_compare_reverse;
-    return cmpFn;
+DirectoryEntryCompareFunction DirectoryManager::compareFunction() const {
+    switch (mSortingMode) {
+    case SortingMode::SORT_NAME_DESC:
+	return [this](const Entry& a, const Entry& b) { return name_entry_compare_reverse(a,b); };
+    case SortingMode::SORT_TIME:
+	return &DirectoryManager::date_entry_compare;
+    case SortingMode::SORT_TIME_DESC:
+	return &DirectoryManager::date_entry_compare_reverse;
+    case SortingMode::SORT_SIZE:
+	return &DirectoryManager::size_entry_compare;
+    case SortingMode::SORT_SIZE_DESC:
+	return &DirectoryManager::size_entry_compare_reverse;
+    default:
+	return [this](const Entry& a, const Entry& b) { return name_entry_compare(a,b); };
+    }
 }
 
 // ##############################################################
@@ -445,7 +447,7 @@ void DirectoryManager::generateFileList() {
 }
 
 void DirectoryManager::sortFileList() {
-    sort(entryVec.begin(), entryVec.end(), std::bind(compareFunction(), this, std::placeholders::_1, std::placeholders::_2));
+    sort(entryVec.begin(), entryVec.end(), compareFunction());
 }
 
 void DirectoryManager::setSortingMode(SortingMode mode) {
@@ -485,8 +487,7 @@ void DirectoryManager::onFileAddedExternal(QString fileName) {
         onFileModifiedExternal(fileName);
     fs::directory_entry stdEntry(toStdString(fullPath));
     Entry entry(fileName, stdEntry);
-    insert_sorted(entryVec, entry,
-		  [&,f=compareFunction()](const Entry& a, const Entry& b) { return ((*this).*f)(a,b); } );
+    insert_sorted(entryVec, entry, compareFunction() );
     emit fileAdded(fileName);
     return;
 }
@@ -516,8 +517,7 @@ void DirectoryManager::onFileRenamedExternal(QString oldFile, QString newFile) {
     // insert
     fs::directory_entry stdEntry(toStdString(fullPath));
     Entry entry(newFile, stdEntry);
-    insert_sorted(entryVec, entry,
-		  [&,f=compareFunction()](const Entry& a, const Entry& b) { return ((*this).*f)(a,b); } );
+    insert_sorted(entryVec, entry, compareFunction() );
     emit fileRenamed(oldFile, oldIndex, newFile, indexOf(newFile));
 }
 
@@ -543,8 +543,7 @@ bool DirectoryManager::forceInsert(QString fileName) {
         return false;
     fs::directory_entry stdEntry(toStdString(fullPath));
     Entry entry(fileName, stdEntry);
-    insert_sorted(entryVec, entry,
-		  [&,f=compareFunction()](const Entry& a, const Entry& b) { return ((*this).*f)(a,b); } );
+    insert_sorted(entryVec, entry, compareFunction() );
     emit fileAdded(fileName);
     return true;
 }

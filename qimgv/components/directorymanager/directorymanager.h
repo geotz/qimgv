@@ -13,6 +13,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <functional>
 //#include <experimental/filesystem>
 
 #include "settings.h"
@@ -26,7 +27,7 @@
 class DirectoryManager;
 class Entry;
 
-typedef bool (DirectoryManager::*CompareFunction)(const Entry &e1, const Entry &e2) const;
+using DirectoryEntryCompareFunction = std::function<bool(const Entry &a, const Entry &b)>;
 
 class DirectoryManager : public QObject {
     Q_OBJECT
@@ -81,12 +82,12 @@ private:
     void moveToTrash(QString file);
     bool name_entry_compare(const Entry &e1, const Entry &e2) const;
     bool name_entry_compare_reverse(const Entry &e1, const Entry &e2) const;
-    bool date_entry_compare(const Entry &e1, const Entry &e2) const;
-    bool date_entry_compare_reverse(const Entry &e1, const Entry &e2) const;
+    static bool date_entry_compare(const Entry &e1, const Entry &e2);
+    static bool date_entry_compare_reverse(const Entry &e1, const Entry &e2);
+    static bool size_entry_compare(const Entry &e1, const Entry &e2);
+    static bool size_entry_compare_reverse(const Entry &e1, const Entry &e2);
     bool entryCompareString(Entry &e, QString path);
-    CompareFunction compareFunction() const;
-    bool size_entry_compare(const Entry &e1, const Entry &e2) const;
-    bool size_entry_compare_reverse(const Entry &e1, const Entry &e2) const;
+    DirectoryEntryCompareFunction compareFunction() const;
 signals:
     void loaded(const QString &path);
     void sortingChanged();
