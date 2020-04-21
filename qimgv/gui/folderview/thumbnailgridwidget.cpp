@@ -24,7 +24,7 @@ void ThumbnailGridWidget::setupLayout() {
         nameRect = QRectF(paddingX, paddingY + mThumbnailSize + labelSpacing,
                           mThumbnailSize, fm->height());
         nameTextRect = nameRect.adjusted(4, 0, -4, 0);
-        nameFits = !(thumbnail && fm->width(thumbnail->name()) >= nameTextRect.width());
+	nameFits = !(thumbnail && fm->boundingRect(thumbnail->name()).width() >= nameTextRect.width());
     }
 }
 

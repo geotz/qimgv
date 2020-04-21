@@ -123,7 +123,7 @@ void ThumbnailWidget::setupLayout() {
 
     if(thumbnail && !thumbnail->label().isEmpty()) {
         nameTextRect = nameRect.adjusted(4, 0, -4, 0);
-        labelTextRect.setWidth(fmSmall->width(thumbnail->label()));
+	labelTextRect.setWidth(fmSmall->boundingRect(thumbnail->label()).width());
         labelTextRect.setHeight(nameRect.height());
         labelTextRect.moveTop(nameTextRect.top());
         labelTextRect.moveRight(nameTextRect.right());
@@ -208,11 +208,11 @@ void ThumbnailWidget::drawLabel(QPainter *painter) {
     painter->drawText(labelTextRect, flags, thumbnail->label());
 }
 
-void ThumbnailWidget::drawThumbnail(QPainter* painter, qreal dpr, const QPixmap *pixmap) {
+void ThumbnailWidget::drawThumbnail(QPainter* painter, qreal /*dpr*/, const QPixmap *pixmap) {
     painter->drawPixmap(drawRectCentered, *pixmap);
 }
 
-void ThumbnailWidget::drawIcon(QPainter* painter, qreal dpr, const QPixmap *pixmap) {
+void ThumbnailWidget::drawIcon(QPainter* painter, qreal /*dpr*/, const QPixmap *pixmap) {
     QPointF pos = QPointF(width()  / 2 - pixmap->width()  / (2 * pixmap->devicePixelRatioF()),
                           height() / 2 - pixmap->height() / (2 * pixmap->devicePixelRatioF()));
     painter->drawPixmap(pos, *pixmap);

@@ -84,7 +84,11 @@ void FloatingMessage::setIcon(FloatingMessageIcon icon) {
             ui->iconLabel->show();
             ui->iconLabel->setIconPath(":/res/icons/notifications/success16.png");
             break;
-        case FloatingMessageIcon::ICON_ERROR:
+	case FloatingMessageIcon::ICON_WARNING:
+	    //ui->iconLabel->setIconPath(":/res/icons/notifications/warning16.png");
+	    ui->iconLabel->hide();
+	    break;
+	case FloatingMessageIcon::ICON_ERROR:
             //ui->iconLabel->setIconPath(":/res/icons/notifications/error16.png");
             ui->iconLabel->hide();
             break;

@@ -1,6 +1,8 @@
 #include "resizedialog.h"
 #include "ui_resizedialog.h"
 
+#include <QScreen>
+
 ResizeDialog::ResizeDialog(QSize originalSize,  QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ResizeDialog),
@@ -22,7 +24,7 @@ ResizeDialog::ResizeDialog(QSize originalSize,  QWidget *parent) :
                              QString::number(originalSize.height()));
 
     QDesktopWidget desktopWidget;
-    desktopSize = desktopWidget.screenGeometry(desktopWidget.primaryScreen()).size();
+    desktopSize = QGuiApplication::primaryScreen()->geometry().size();
     connect(ui->width,  qOverload<int>(&QSpinBox::valueChanged), this, &ResizeDialog::widthChanged);
     connect(ui->height, qOverload<int>(&QSpinBox::valueChanged), this, &ResizeDialog::heightChanged);
     connect(ui->keepAspectRatio, &QCheckBox::toggled, this, &ResizeDialog::onAspectRatioCheckbox);
