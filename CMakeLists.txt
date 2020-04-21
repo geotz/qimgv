@@ -7,18 +7,20 @@ project(qimgv
     HOMEPAGE_URL "https://github.com/easymodo/qimgv"
     LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -pedantic -Wno-inconsistent-missing-override")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wpedantic -pedantic")
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+endif()
 
 cmake_print_variables(
     CMAKE_SYSTEM
     CMAKE_SYSTEM_NAME
     CMAKE_SYSTEM_VERSION
     CMAKE_CXX_COMPILER_ID
-    CMAKE_CXX_COMPILER_VERSION )
+    CMAKE_CXX_COMPILER_VERSION
+    CMAKE_CXX_FLAGS )
 
 #if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 #    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
