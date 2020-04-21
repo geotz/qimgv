@@ -4,11 +4,11 @@ ThumbnailView::ThumbnailView(ThumbnailViewOrientation orient, QWidget *parent)
     : QGraphicsView(parent),
       orientation(orient),
       blockThumbnailLoading(false),
-      mCropThumbnails(false),
-      mDrawScrollbarIndicator(true),
-      mThumbnailSize(120),
       mSelectedIndex(-1),
-      scrollTimeLine(nullptr)
+      mDrawScrollbarIndicator(true),
+      mCropThumbnails(false),
+      scrollTimeLine(nullptr),
+      mThumbnailSize(120)
 {
     setAccessibleName("thumbnailView");
     this->setMouseTracking(true);
